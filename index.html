@@ -18,6 +18,7 @@
       <a href="#about">About</a>
       <a href="#education">Education</a>
       <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -31,7 +32,7 @@
         <p class="lead">AI/ML Engineer | Full-Stack Web Developer based in North York, Ontario</p>
         <div class="button-row">
           <a class="btn primary" href="#contact">Contact Me</a>
-          <a class="btn ghost" href="https://github.com/AbhiPatel281101/abhi-portfolio/blob/main/Profile%20(1).pdf" target="_blank" rel="noreferrer">Resume</a>
+          <a class="btn ghost" href="https://github.com/AbhiPatel281101/Abhi-s_portfolio/blob/main/Abhi_Patel_Resume.pdf" target="_blank" rel="noreferrer">Resume</a>
           <a class="btn ghost" href="https://github.com/AbhiPatel281101" target="_blank" rel="noreferrer">GitHub</a>
         </div>
       </div>
@@ -42,8 +43,8 @@
       <div class="content">
         <p class="kicker">About Me</p>
         <h2>Building smart, user-friendly tech solutions.</h2>
-        <p>Hi, I'm Abhi Patel - an AI/ML Engineer, Full-Stack Web Developer based in North York, Ontario. I specialize in building smart, user-friendly tech solutions and helping people communicate clearly across borders.</p>
-        <p>Whether it's designing intuitive websites, developing machine learning models, my goal is to create impactful and accessible technology.</p>
+        <p>I am a Data Scientist focused on NLP, predictive modelling, and ML deployment. I build end-to-end AI/ML projects using Python, from data cleaning and feature engineering to model evaluation, API deployment, and clear communication of results.
+        </p>
       </div>
     </section>
 
@@ -76,14 +77,31 @@
         <h2>Project work, counseling, and technical growth.</h2>
         <div class="timeline">
           <article>
-            <span>May-Aug 2025</span>
+            <span>May 2025 - Aug 2025</span>
             <h3>Project Manager Intern</h3>
-            <p>Lambton College PMO - Supported project planning and coordination.</p>
+            <p><b>Lambton College PMO</b> - Designed and tested a web-based data management system, implementing RESTful APIs and modular design principles.
+            </p><p>Led cross-functional requirement gathering with stakeholders to deliver iterative, feedback-driven software enhancements.</p>
           </article>
           <article>
-            <span>2019-2022</span>
-            <h3>BCA Student</h3>
-            <p>Shri B. J. Patel Umiya BBA College - Studied computer applications and programming.</p>
+            <span>April 2022 - december 2023</span>
+            <h3>Software Engineer</h3>
+            <p><b>Campus code</b> - Architected a web event registration system with robust backend logic and RESTful APIs using modular design principles.
+            </p>
+            <p>Partnered with cross-functional stakeholders to translate business requirements into iterative, production-ready software updates.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="card projects-card">
+      <div class="content full">
+        <p class="kicker">Projects</p>
+        <h2>Latest work from GitHub.</h2>
+        <p class="projects-intro">My recent projects showcase my skills in data science, machine learning, and software development.</p>
+        <div id="projects-grid" class="projects-grid" aria-live="polite">
+          <article class="project-card project-card-loading">
+            <span>Loading GitHub projects...</span>
           </article>
         </div>
       </div>
@@ -104,15 +122,15 @@
           <article>
             <h3>AI/ML Skills</h3>
             <div class="chips">
-              <span>Regression, Classification, Clustering, NLP, Feature Engineering, Cross-Validation, CNNs, Transfer Learning, BERT, Embeddings, Vector Databases, Prompt Engineering, ETL Pipelines
-              </span>
+              <P>Regression, Classification, Clustering, NLP, Feature Engineering, Cross-Validation, CNNs, Transfer Learning, BERT, Embeddings, Vector Databases, Prompt Engineering, ETL Pipelines
+              </P>
             </div>
           </article>
           <article>
             <h3>AI Tools</h3>
             <div class="chips">
-              <span>ChatGPT, Claude, GitHub Copilot, Google Antigravity, Cursor, Windsurf, Gemini
-              </span>
+              <P>ChatGPT, Claude, GitHub Copilot, Google Antigravity, Cursor, Windsurf, Gemini
+              </P>
             </div>
           </article>
         </div>
@@ -151,5 +169,85 @@
     <p>&copy; 2026 Abhi Patel.</p>
     <a href="#home">Back to top</a>
   </footer>
+
+  <script>
+    const githubUsername = "AbhiPatel281101";
+    const projectsGrid = document.querySelector("#projects-grid");
+
+    const formatDate = (dateValue) => new Intl.DateTimeFormat("en", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(dateValue));
+
+    const createProjectCard = (repo) => {
+      const card = document.createElement("article");
+      const title = document.createElement("h3");
+      const meta = document.createElement("div");
+      const updated = document.createElement("span");
+      const link = document.createElement("a");
+
+      card.className = "project-card";
+      meta.className = "project-meta";
+      link.className = "project-button";
+
+      title.textContent = repo.name.replaceAll("-", " ");
+      updated.textContent = repo.updated_at ? `Updated ${formatDate(repo.updated_at)}` : "Updated date unavailable";
+      link.href = repo.html_url;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.textContent = "View Repo";
+
+      meta.append(updated, link);
+      card.append(title, meta);
+
+      return card;
+    };
+
+    const createStatusCard = (message, linkUrl) => {
+      const card = document.createElement("article");
+      const status = document.createElement("span");
+
+      card.className = "project-card project-card-loading";
+      status.textContent = message;
+      card.append(status);
+
+      if (linkUrl) {
+        const link = document.createElement("a");
+        link.href = linkUrl;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.textContent = "Open GitHub profile";
+        card.append(link);
+      }
+
+      return card;
+    };
+
+    fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=100`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("GitHub projects could not be loaded.");
+        }
+
+        return response.json();
+      })
+      .then((repos) => {
+        const publicRepos = repos.filter((repo) => !repo.fork);
+
+        if (!publicRepos.length) {
+          projectsGrid.replaceChildren(createStatusCard("No public GitHub projects found yet."));
+          return;
+        }
+
+        projectsGrid.replaceChildren(...publicRepos.map(createProjectCard));
+      })
+      .catch(() => {
+        projectsGrid.replaceChildren(createStatusCard(
+          "Projects are temporarily unavailable. Please visit GitHub directly.",
+          `https://github.com/${githubUsername}`
+        ));
+      });
+  </script>
 </body>
 </html>
